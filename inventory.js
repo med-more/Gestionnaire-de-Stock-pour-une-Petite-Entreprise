@@ -15,4 +15,8 @@ class inventory{
             return [];
         }
     }
+
+    save(){
+        fs.writeFileSync(this.filePath, JSON.stringify(this.products, null, 2));
+    }
 }
