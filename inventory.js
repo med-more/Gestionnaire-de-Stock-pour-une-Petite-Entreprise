@@ -31,4 +31,14 @@ class inventory{
         this.save();
         console.log("produit ajouter");
     }
+
+    listeProducts(){
+        if(this.products.length===0){
+            console.log("pas des produits");
+            return;
+        }
+        this.products.foreach((prodyct)=>{
+            console.log(`ID : ${product.id}, nom : ${product.name}, description : ${product.description}, quantity : ${product.quantity}, price : ${product.price}`);
+        });
+    }
 }
