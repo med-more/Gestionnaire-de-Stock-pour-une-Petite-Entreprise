@@ -41,4 +41,21 @@ class inventory{
             console.log(`ID : ${product.id}, nom : ${product.name}, description : ${product.description}, quantity : ${product.quantity}, price : ${product.price}`);
         });
     }
+
+    updateProduct(id, quantity, price) {
+        const product = this.products.find(p => p.id === id);
+    
+        if (!product) return console.log("Produit introuvable");
+    
+        if (quantity > 0) product.quantity = quantity;
+        if (price > 0) product.price = price;
+    
+        if (quantity > 0 || price > 0) {
+            this.save();
+            console.log("Produit modifié");
+        } else {
+            console.log("Aucune modification");
+        }
+    }
+    
 }
