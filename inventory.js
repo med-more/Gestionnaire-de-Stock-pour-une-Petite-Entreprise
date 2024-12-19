@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Product = require('./product');
 
-class inventory{
+class Inventory{
     constructor(filePath){
         this.filePath = filePath;
         this.products = this.loadProducts();
@@ -58,4 +58,14 @@ class inventory{
         }
     }
     
+    deleteProduct(id){
+        const index = this.products.findIndex((p) =>p.id ===id);
+        if(index === -1){
+            console.log("pas de produit");
+            return;
+        }
+        this.products.splice(index, 1);
+        this.save();
+        console.log("produit supprimer");
+    }
 }
