@@ -33,11 +33,11 @@ class Inventory{
     }
 
     listeProducts(){
-        if(this.products.length===0){
+        if(this.products.length === 0){
             console.log("pas des produits");
             return;
         }
-        this.products.foreach((prodyct)=>{
+        this.products.foreach((product)=>{
             console.log(`ID : ${product.id}, nom : ${product.name}, description : ${product.description}, quantity : ${product.quantity}, price : ${product.price}`);
         });
     }
@@ -82,11 +82,11 @@ function mainMenu(){
     console.log("2. Liste des produits");
     console.log("3. Modifier Produit");
     console.log("4. Supprimer produit");
-    console.log("8. Quitter");
+    console.log("5. Quitter");
 
     readline.question('choissisez une option :', (option)=>{
         switch(option){
-            case 1:
+            case '1':
                 readline.question("entrer le nom :", (name) =>{
                     readline.question("entrer description :", (description)=>{
                         readline.question("entrer quantity :", (quantity)=>{
@@ -98,10 +98,44 @@ function mainMenu(){
                     });
                 });
             break;
-            case 2:
+            case '2':
                 inventory.listeProducts();
                 mainMenu();
             break;
+            case '3':
+                readline.question("entrer Id pour modifier :", (id)=>{
+                    const productId = parseInt(id);
+                    const product = inventory.products.find((p)=>p.id === productId);
+                    if(!product){
+                        console.log("pas de produit");
+                        mainMenu();
+                        return;
+                    }
+                    readline.question("entrer le nouveau quantity :", (quantity)=>{
+                        readline.question("entrer le nouveau prix :", (price)=>{
+                            product.quantity = quantity ? parseInt(quantity) : product.quantity;
+                            product.price = price ? parseFloat(price) : product.price;
+                            inventory.save();
+                            console.log("produit est modifier");
+                            mainMenu();
+                        });
+                    });
+                });
+            break;
+            case '4':
+                readline.question("entrer Id pour supprimer", (id)=>{
+                    inventory.deleteProduct(parseInt(id));
+                    mainMenu();
+                });
+            break;
+            case '5':
+                console.log("meerci!");
+                readline.close();
+            break;
+            default :
+                console.log("invalide option");
+                mainMenu();
         }
     });
 }
+mainMenu();
