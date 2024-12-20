@@ -75,3 +75,33 @@ const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 });
+
+function mainMenu(){
+    console.log(`\n*** Menu ***\n`);
+    console.log("1. Ajouter un produit");
+    console.log("2. Liste des produits");
+    console.log("3. Modifier Produit");
+    console.log("4. Supprimer produit");
+    console.log("8. Quitter");
+
+    readline.question('choissisez une option :', (option)=>{
+        switch(option){
+            case 1:
+                readline.question("entrer le nom :", (name) =>{
+                    readline.question("entrer description :", (description)=>{
+                        readline.question("entrer quantity :", (quantity)=>{
+                            readline.question("entrer price :", (price)=>{
+                                inventory.addProduct(name.trim(), description.trim(), parseInt(quantity), parseFloat(price));
+                                mainMenu();
+                            });
+                        });
+                    });
+                });
+            break;
+            case 2:
+                inventory.listeProducts();
+                mainMenu();
+            break;
+        }
+    });
+}
