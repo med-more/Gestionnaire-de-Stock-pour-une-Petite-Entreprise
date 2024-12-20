@@ -69,3 +69,9 @@ class Inventory{
         console.log("produit supprimer");
     }
 }
+
+const inventory = new Inventory('product');
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
