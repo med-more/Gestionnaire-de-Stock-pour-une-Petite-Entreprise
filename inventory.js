@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Product = require('./product');
+const Product = require('./product.js');
 
 class Inventory{
     constructor(filePath){
@@ -18,26 +18,32 @@ class Inventory{
 
     save(){
         fs.writeFileSync(this.filePath, JSON.stringify(this.products, null, 2));
+        
     }
 
-    addProduct(name, description, quantity, price){
-        if(!name || quantity<=0 || price<=0){
-            console.log("entrer valid information");
+    addProduct(name, description, quantity, price) {
+        try {
+          if (!name || quantity <= 0 || price <= 0) {
+            console.log('entrer valide informations');
             return;
+          }
+          const id = this.products.length + 1;
+          const product = new Product(id, name, description, quantity, price);
+          this.products.push(product);
+          this.save();
+          console.log('Product added');
+        } catch (error) {
+          console.error('Error:', error.message);
         }
-        const id = this.products.length + 1; //generer un identifiant unique
-        const product = new Product(id, name, description, quantity, price);
-        this.products.push(product);
-        this.save();
-        console.log("produit ajouter");
     }
+      
 
     listeProducts(){
         if(this.products.length === 0){
             console.log("pas des produits");
             return;
         }
-        this.products.foreach((product)=>{
+        this.products.forEach((product)=>{
             console.log(`ID : ${product.id}, nom : ${product.name}, description : ${product.description}, quantity : ${product.quantity}, price : ${product.price}`);
         });
     }
@@ -123,7 +129,7 @@ function mainMenu(){
                 });
             break;
             case '4':
-                readline.question("entrer Id pour supprimer", (id)=>{
+                readline.question("entrer Id pour supprimer :", (id)=>{
                     inventory.deleteProduct(parseInt(id));
                     mainMenu();
                 });
