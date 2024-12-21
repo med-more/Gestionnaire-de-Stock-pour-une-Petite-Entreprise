@@ -23,7 +23,7 @@ class Inventory{
 
     addProduct(name, description, quantity, price) {
         try {
-          if (!name || quantity <= 0 || price <= 0) {
+          if (!name || !Number.isInteger(quantity) || quantity <= 0 || isNaN(price) || price <= 0) {
             console.log('entrer valide informations');
             return;
           }
@@ -52,6 +52,16 @@ class Inventory{
         const product = this.products.find(p => p.id === id);
     
         if (!product) return console.log("Produit introuvable");
+
+        if (quantity && (!Number.isInteger(quantity) || quantity<=0)) {
+            console.log('La quantité doit être un positif.');
+            return;
+        }
+
+        if (price && (isNaN(price) || price<=0)) {
+            console.log('Le prix doit être un nombre.');
+            return;
+        }
     
         if (quantity > 0) product.quantity = quantity;
         if (price > 0) product.price = price;
@@ -99,9 +109,21 @@ function mainMenu(){
             case '1':
                 readline.question("entrer le nom :", (name) =>{
                     readline.question("entrer description :", (description)=>{
-                        readline.question("entrer quantity :", (quantity)=>{
-                            readline.question("entrer price :", (price)=>{
-                                inventory.addProduct(name.trim(), description.trim(), parseInt(quantity), parseFloat(price));
+                        readline.question("entrer quantity :", (quantityInput)=>{
+                            const quantity = parseInt(quantityInput, 10);
+                            if (isNaN(quantity) || quantity<=0) {
+                                console.log("La quantité doit être positif et un nombre");
+                                mainMenu();
+                                return;
+                            }
+                            readline.question("entrer price :", (priceInput)=>{
+                                const price = parseFloat(priceInput);
+                                if (isNaN(price) || price<=0) {
+                                    console.log("Le prix doit être positif et un nombre");
+                                    mainMenu();
+                                    return;
+                                }
+                                inventory.addProduct(name.trim(), description.trim(), quantity, price);
                                 mainMenu();
                             });
                         });
