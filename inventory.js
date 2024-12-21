@@ -71,6 +71,10 @@ class Inventory{
             return;
         }
         this.products.splice(index, 1);
+
+        this.products.forEach((product, idn)=>{
+            product.id = idn+1;
+        })
         this.save();
         console.log("produit supprimer");
     }
